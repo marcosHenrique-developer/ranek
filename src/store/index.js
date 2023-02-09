@@ -20,6 +20,7 @@ export default new Vuex.Store({
       estado: "",
       cidade: "",
     },
+    user_products: [],
   },
   getters: {},
   mutations: {
@@ -28,6 +29,12 @@ export default new Vuex.Store({
     },
     UPDATE_USER(state, payload) {
       state.user = Object.assign({}, state.user, payload);
+    },
+    UPDATE_USER_PRODUCTS(state, payload) {
+      state.user_products = payload;
+    },
+    ADD_USER_PRODUCTS(state, payload) {
+      state.user_products.unshift(payload);
     },
   },
   actions: {
@@ -43,6 +50,9 @@ export default new Vuex.Store({
         context.commit("UPDATE_USER", user);
       }
       context.commit("UPDATE_LOGIN", true);
+    },
+    getUserProducts(context) {
+      context.commit("UPDATE_USER_PRODUCTS", RanekApi.produto);
     },
     createUser(context, payload) {
       console.log(payload);
