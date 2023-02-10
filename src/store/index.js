@@ -21,6 +21,7 @@ export default new Vuex.Store({
       cidade: "",
     },
     user_products: [],
+    transacao: [],
   },
   getters: {},
   mutations: {
@@ -36,14 +37,17 @@ export default new Vuex.Store({
     ADD_USER_PRODUCTS(state, payload) {
       state.user_products.unshift(payload);
     },
+    REMOVE_USER_PRODUCTS(state) {
+      state.user_products.shift();
+    },
+    UPDATE_USER_TRANSACTION(state, payload) {
+      state.transacao = payload;
+    },
+    ADD_USER_TRANSACTION(state, payload) {
+      state.transacao.unshift(payload);
+    },
   },
   actions: {
-    // getUser(context, payload) {
-    //   return api.get(`usuario${payload}`).then(response => {
-    //     context.commit('UPDATE_USER', response.data)
-    //     context.commit('UPDATE_LOGIN', true)
-    //   })
-    // }
     getUser(context, payload) {
       const user = RanekApi.usuario.find((r) => r.id === payload);
       if (user) {
@@ -55,7 +59,6 @@ export default new Vuex.Store({
       context.commit("UPDATE_USER_PRODUCTS", RanekApi.produto);
     },
     createUser(context, payload) {
-      console.log(payload);
       context.commit("UPDATE_USER", payload);
       context.commit("UPDATE_USER", { id: payload.email });
       // return api.post("/usuario", payload);
@@ -73,6 +76,9 @@ export default new Vuex.Store({
         cidade: "",
       });
       context.commit("UPDATE_LOGIN", false);
+    },
+    getUserTransation(context) {
+      context.commit("UPDATE_USER_TRANSACTION", RanekApi.transacao);
     },
   },
   modules: {},

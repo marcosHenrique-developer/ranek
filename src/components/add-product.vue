@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
 export default {
   name: "AddProduct",
   data() {
@@ -39,7 +38,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getUserProducts"]),
     formatProduct() {
       this.product.usuario_id = this.$store.state.user.id;
     },
@@ -52,6 +50,7 @@ export default {
         descricao: "",
         usuario_id: "",
         fotos: null,
+        vendido: "false",
       };
     },
   },

@@ -10,12 +10,17 @@
         <h1>{{ product.nome }}</h1>
         <p class="price">{{ product.preco | numberPrice }}</p>
         <p class="description">{{ product.descricao }}</p>
-        <button
-          class="btn"
-          :disabled="product.vendido === 'false' ? false : true"
-        >
-          Comprar
-        </button>
+        <transition mode="out-in">
+          <button
+            class="btn"
+            v-if="!finalizar"
+            :disabled="product.vendido === 'false' ? false : true"
+            @click.prevent="() => (finalizar = !finalizar)"
+          >
+            {{ product.vendido === "false" ? "Comprar" : "Produto Vendido" }}
+          </button>
+          <buy-success :produto="product" v-else />
+        </transition>
       </div>
     </div>
     <r-loading v-else />
@@ -23,15 +28,18 @@
 </template>
 
 <script>
+import BuySuccess from "@/components/buy-success.vue";
 import RanekApi from "../../ranek-api/ranek.json";
 
 export default {
+  components: { BuySuccess },
   name: "RProduct",
   props: ["id"],
   data() {
     return {
       product: null,
       loading: false,
+      finalizar: false,
     };
   },
   methods: {

@@ -4,9 +4,12 @@
     <add-product />
     <h2>Seus Produtos</h2>
     <transition-group v-if="user_products" name="list" tag="ul">
-      <li v-for="(product, idx) in user_products" :key="idx">
+      <li v-for="(product, idx) in user_products" :key="`product${idx}`">
         <item-product :product="product">
           <p>{{ product.descricao }}</p>
+          <button class="delete" @click.prevent="deleteProduct(product.id)">
+            Deletar
+          </button>
         </item-product>
       </li>
     </transition-group>
@@ -27,6 +30,14 @@ export default {
   },
   methods: {
     ...mapActions(["getUserProducts"]),
+    deleteProduct() {
+      const deleteProduct = window.confirm("Deseja deletar o produto ?");
+      if (deleteProduct) {
+        this.$store.commit("REMOVE_USER_PRODUCTS");
+      } else {
+        return;
+      }
+    },
   },
   watch: {
     login() {
@@ -53,5 +64,17 @@ h2 {
 .list-enter-active,
 .list-leave-active {
   transition: all 0.3s;
+}
+.delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: url("../../assets/remove.svg");
+  width: 24px;
+  height: 24px;
+  text-indent: -140px;
+  overflow: hidden;
+  cursor: pointer;
+  border: none;
 }
 </style>
